@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Express Tax Returns | Louisburg, NC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f1f3d;
+      --gold: #c9a84c;
+      --gold-light: #e8c96a;
+      --cream: #faf8f3;
+      --text: #1a1a2e;
+      --muted: #5a6478;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(15,31,61,0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(201,168,76,0.25);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--navy) !important;
+      padding: 0.5rem 1.3rem;
+      border-radius: 4px;
+      font-weight: 500 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold-light) !important; color: var(--navy) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 6rem 4rem 4rem;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(201,168,76,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 20%, rgba(201,168,76,0.05) 0%, transparent 60%);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 100px;
+      padding: 0.35rem 1rem;
+      font-size: 0.78rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-badge::before { content: '★'; font-size: 0.7rem; }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      color: #fff;
+      line-height: 1.1;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+    .hero-sub {
+      color: rgba(255,255,255,0.65);
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 0.9rem 2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: background 0.2s, transform 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.85);
+      padding: 0.9rem 2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 400;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Hero right panel */
+    .hero-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 16px;
+      padding: 2.5rem;
+      backdrop-filter: blur(10px);
+      animation: fadeUp 0.6s 0.2s ease both;
+      align-self: center;
+    }
+    .hero-card h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .stat-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+    .stat-num span { color: var(--gold); font-size: 1.8rem; }
+    .stat-label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.3rem;
+    }
+    .contact-block {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1.5rem;
+      display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .contact-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.92rem;
+    }
+    .contact-icon {
+      width: 32px; height: 32px;
+      background: rgba(201,168,76,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .contact-item a { color: inherit; text-decoration: none; }
+    .contact-item a:hover { color: var(--gold); }
+
+    /* ── SERVICES ── */
+    section { padding: 6rem 4rem; }
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.15;
+      font-weight: 700;
+    }
+    .section-intro {
+      max-width: 560px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 1rem;
+    }
+
+    .services {
+      background: var(--cream);
+    }
+    .services-inner { max-width: 1200px; margin: 0 auto; }
+    .services-header { margin-bottom: 3.5rem; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+      border-color: var(--gold);
+    }
+    .service-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+    }
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.6rem;
+      color: var(--navy);
+    }
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── WHY US ── */
+    .why {
+      background: var(--navy);
+      color: #fff;
+    }
+    .why-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .why h2 { color: #fff; }
+    .why .section-label { color: var(--gold); }
+    .why .section-intro { color: rgba(255,255,255,0.6); }
+    .reasons { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .reason {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+    }
+    .reason-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      min-width: 2.5rem;
+    }
+    .reason h4 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+    .reason p { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+    .why-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .why-tile {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .why-tile:first-child { grid-column: 1 / -1; }
+    .why-tile-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .why-tile-label {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.4rem;
+    }
+
+    /* ── PROCESS ── */
+    .process { background: #fff; }
+    .process-inner { max-width: 1200px; margin: 0 auto; }
+    .process-header { text-align: center; margin-bottom: 4rem; }
+    .process-header .section-intro { margin: 1rem auto 0; }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 2rem; left: 12%; right: 12%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .step { text-align: center; padding: 0 1.5rem; }
+    .step-circle {
+      width: 4rem; height: 4rem;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 2px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--gold);
+      position: relative; z-index: 1;
+    }
+    .step h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--navy);
+    }
+    .step p { font-size: 0.86rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: var(--cream); }
+    .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+    .testimonials-header { text-align: center; margin-bottom: 3.5rem; }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .review-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      border: 1px solid rgba(0,0,0,0.07);
+    }
+    .stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; }
+    .review-card blockquote {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 1.2rem;
+    }
+    .reviewer { display: flex; align-items: center; gap: 0.75rem; }
+    .reviewer-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+    .reviewer-name { font-weight: 500; font-size: 0.9rem; color: var(--navy); }
+    .reviewer-meta { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--navy);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(201,168,76,0.1) 0%, transparent 70%);
+    }
+    .cta-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 2; }
+    .cta-section h2 { color: #fff; margin-bottom: 1rem; }
+    .cta-section p { color: rgba(255,255,255,0.6); font-size: 1.05rem; margin-bottom: 2.5rem; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #070f1e;
+      padding: 3rem 4rem;
+      color: rgba(255,255,255,0.45);
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .footer-logo span { color: var(--gold); }
+    footer p { font-size: 0.82rem; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .why-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .steps { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .steps::before { display: none; }
+      .reviews-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Express <span>Tax</span> Returns</div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#why">About</a>
+      <a href="#process">How It Works</a>
+      <a href="#contact" class="nav-cta">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-badge">Serving Franklin County Since 2002</div>
+        <h1>Your Refund,<br/><em>Maximized.</em><br/>Fast.</h1>
+        <p class="hero-sub">
+          Express Tax Returns has helped thousands of Louisburg families and small businesses get every dollar they deserve — with expert preparation and a personal touch you won't find at the big chains.
+        </p>
+        <div class="hero-actions">
+          <a href="tel:9194973100" class="btn-primary">📞 Call (919) 497-3100</a>
+          <a href="#services" class="btn-outline">Explore Services</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>Why Clients Trust Us</h3>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="stat-num">23<span>+</span></div>
+            <div class="stat-label">Years in Business</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">A<span>+</span></div>
+            <div class="stat-label">BBB Rating</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">100<span>%</span></div>
+            <div class="stat-label">Local & Independent</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">2<span>x</span></div>
+            <div class="stat-label">Locations in NC</div>
+          </div>
+        </div>
+        <div class="contact-block" id="contact">
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <span>131 Bickett Blvd., Louisburg, NC 27549</span>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <a href="tel:9194973100">(919) 497-3100</a>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">⏰</div>
+            <span>Mon–Fri 9am–6pm &nbsp;|&nbsp; Sat 10am–3pm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="services-inner">
+      <div class="services-header reveal">
+        <div class="section-label">What We Do</div>
+        <h2>Complete Tax Services<br/>Under One Roof</h2>
+        <p class="section-intro">Whether you're filing a simple return or navigating complex business taxes, our experienced team handles it all — accurately and efficiently.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-icon">📄</div>
+          <h3>Individual Tax Returns</h3>
+          <p>Federal and state income tax preparation for individuals and families. We find every deduction and credit you qualify for — guaranteed.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🏢</div>
+          <h3>Small Business Taxes</h3>
+          <p>S-Corps, LLCs, sole proprietors, and partnerships. We handle the complexity so you can focus on running your business.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">📅</div>
+          <h3>Prior Year Returns</h3>
+          <p>Need to file back taxes? We prepare returns for prior years and can help you get into compliance quickly and stress-free.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">✏️</div>
+          <h3>Amended Returns</h3>
+          <p>Made an error on a previous filing? We'll correct it and help you recover any refund you may have missed.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">💼</div>
+          <h3>Self-Employment</h3>
+          <p>Freelancers and gig workers have unique tax situations. We'll navigate Schedule C, self-employment tax, and quarterly estimates.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🎓</div>
+          <h3>Tax Planning & Advice</h3>
+          <p>Don't just file — plan ahead. We'll help you reduce your tax burden for next year with smart, proactive strategies.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="why" id="why">
+    <div class="why-inner">
+      <div class="why-left reveal">
+        <div class="section-label">Why Express Tax Returns</div>
+        <h2>Local Experts.<br/>Real Results.</h2>
+        <p class="section-intro">We're not a franchise. We're your neighbors — and we've been taking care of Franklin County families for over two decades.</p>
+        <div class="reasons">
+          <div class="reason">
+            <div class="reason-num">01</div>
+            <div>
+              <h4>Personalized Attention</h4>
+              <p>You'll work with a real person who knows your name and your situation — not a different stranger every year.</p>
+            </div>
+          </div>
+          <div class="reason">
+            <div class="reason-num">02</div>
+            <div>
+              <h4>Maximum Refund Focus</h4>
+              <p>We dig deep to find every credit and deduction that applies to your life, your family, and your work.</p>
+            </div>
+          </div>
+          <div class="reason">
+            <div class="reason-num">03</div>
+            <div>
+              <h4>Fast Turnaround</h4>
+              <p>Our name says it all — we move quickly without sacrificing accuracy, so you get your refund sooner.</p>
+            </div>
+          </div>
+          <div class="reason">
+            <div class="reason-num">04</div>
+            <div>
+              <h4>A+ BBB Rated</h4>
+              <p>Backed by over 23 years of trust and an A+ rating with the Better Business Bureau.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="why-visual reveal">
+        <div class="why-tile">
+          <div class="why-tile-num">23+</div>
+          <div class="why-tile-label">Years Serving Louisburg</div>
+        </div>
+        <div class="why-tile">
+          <div class="why-tile-num">A+</div>
+          <div class="why-tile-label">BBB Rating</div>
+        </div>
+        <div class="why-tile">
+          <div class="why-tile-num">2</div>
+          <div class="why-tile-label">NC Locations</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <div class="process-inner">
+      <div class="process-header reveal">
+        <div class="section-label">How It Works</div>
+        <h2>Simple. Fast. Stress-Free.</h2>
+        <p class="section-intro">Getting your taxes done shouldn't be complicated. Here's how we make it easy.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-circle">1</div>
+          <h4>Schedule a Visit</h4>
+          <p>Call us or walk in to our Louisburg location. No appointment necessary during tax season.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-circle">2</div>
+          <h4>Bring Your Documents</h4>
+          <p>W-2s, 1099s, last year's return — we'll tell you exactly what you need when you call.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-circle">3</div>
+          <h4>We Prepare Your Return</h4>
+          <p>Our experts accurately prepare your return, maximizing every deduction you're entitled to.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-circle">4</div>
+          <h4>Review & File</h4>
+          <p>You review, approve, and we e-file — getting your refund to you as fast as possible.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="testimonials-inner">
+      <div class="testimonials-header reveal">
+        <div class="section-label">Client Reviews</div>
+        <h2>Trusted by Louisburg Families</h2>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"I've been coming to Express Tax Returns for years and wouldn't go anywhere else. They always find deductions I didn't even know I qualified for. Honest, fast, and friendly."</blockquote>
+          <div class="reviewer">
+            <div class="reviewer-avatar">TM</div>
+            <div>
+              <div class="reviewer-name">Tammy M.</div>
+              <div class="reviewer-meta">Louisburg, NC · 6 years</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"As a small business owner, taxes used to stress me out. The team here makes it painless and I know it's done right. They take the time to explain everything."</blockquote>
+          <div class="reviewer">
+            <div class="reviewer-avatar">DW</div>
+            <div>
+              <div class="reviewer-name">Darius W.</div>
+              <div class="reviewer-meta">Franklin County, NC · Business owner</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"Quick, professional, and they got me a bigger refund than I expected. I referred my whole family. Real community-minded people — this is exactly the kind of local business worth supporting."</blockquote>
+          <div class="reviewer">
+            <div class="reviewer-avatar">LR</div>
+            <div>
+              <div class="reviewer-name">Lisa R.</div>
+              <div class="reviewer-meta">Louisburg, NC · Family of 4</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner reveal">
+      <div class="section-label">Ready to Get Started?</div>
+      <h2>File With Confidence This Season</h2>
+      <p>Join thousands of Franklin County residents who trust Express Tax Returns every year. Call us today or stop by our Louisburg office.</p>
+      <div class="cta-actions">
+        <a href="tel:9194973100" class="btn-primary">📞 (919) 497-3100</a>
+        <a href="https://maps.google.com/?q=131+Bickett+Blvd+Louisburg+NC" target="_blank" class="btn-outline">📍 Get Directions</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Express <span>Tax</span> Returns</div>
+      <p>131 Bickett Blvd., Louisburg, NC 27549 &nbsp;|&nbsp; © 2025 Express Tax Returns. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="tel:9194973100">Call Us</a>
+        <a href="https://maps.google.com/?q=131+Bickett+Blvd+Louisburg+NC" target="_blank">Directions</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
